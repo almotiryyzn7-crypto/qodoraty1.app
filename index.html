@@ -375,81 +375,59 @@
   @keyframes splashSpin{to{transform:rotate(360deg);}}
   ::selection{background:var(--gold-500); color:var(--navy-950);}
 
-
   /* =========================================================
-     Desktop and tablet responsive layout
-     Keeps the original mobile experience unchanged.
+     تصميم متجاوب: جوال (افتراضي) ← تابلت ≥700px ← كمبيوتر ≥1100px
      ========================================================= */
-  @media (min-width: 700px){
-    #app{max-width:760px; padding-bottom:92px;}
-    .tabbar{max-width:760px; border-radius:18px 18px 0 0; box-shadow:0 -10px 35px rgba(0,0,0,.20);}
+  @media (min-width:700px){
+    :root{--page-w:760px;}
+    #app{max-width:var(--page-w);}
+    .tabbar{max-width:var(--page-w); border-radius:18px 18px 0 0;}
+    .tab-btn{font-size:13px;}
     .hero-banner{height:280px; border-radius:0 0 30px 30px;}
+    .topbar{padding:22px 28px 12px;}
+    .brand-name{font-size:20px;} .brand-sub{font-size:12.5px;}
+    .hero,.exam-card,.insight-row,.prof-hero,.ad-banner,.quick-grid,.section-head,.pager,.legend,.plus-list,.meta-row{margin-inline:28px;}
+    .quick-grid,.pager{padding-inline:0;} .legend{padding-inline:0;} .meta-row{padding-inline:0;}
+    .quick-grid{grid-template-columns:repeat(5,1fr); gap:14px;}
+    .badges-grid{grid-template-columns:repeat(4,1fr); gap:14px;}
+    .hero h1{font-size:24px;} .hero p{font-size:15px; max-width:none;}
+    .path-wrap{max-width:520px; margin-inline:auto;}
+    /* الاختبار والنتائج: تغطية الشاشة كاملة مع محتوى مركزي */
+    .overlay,#splashScreen{max-width:none; margin:0; padding-inline:max(0px, calc((100vw - var(--page-w)) / 2));}
+    #splashScreen{padding-inline:0;}
+    .qcard{margin:18px 28px; padding:28px 28px;}
+    .qcard p{font-size:21px; line-height:1.8;}
+    .choice{font-size:17px; padding:16px 20px;}
+    .quiz-top{padding-inline:28px;}
+    .choices{padding-inline:28px; gap:12px;}
+    .explain,.exp-box,.feedback{margin-inline:28px;}
+    .name-modal-card{max-width:420px;}
+    .toast{max-width:480px;}
+  }
+  @media (min-width:1100px){
+    :root{--page-w:1080px;}
+    body{--rail-w:104px;}
+    #app{padding-bottom:32px; padding-inline-end:var(--rail-w); max-width:calc(var(--page-w) + var(--rail-w));}
+    /* شريط التنقل يصبح عمودًا جانبيًا ثابتًا */
+    .tabbar{top:0; bottom:0; left:auto; right:0; transform:none; width:var(--rail-w); max-width:none; flex-direction:column; justify-content:center; align-items:stretch; gap:10px; padding:20px 10px; border-top:none; border-radius:0; border-inline-start:1px solid rgba(120,120,120,.18);}
+    html[dir="ltr"] .tabbar{right:auto; left:0; border-inline-start:none; border-inline-end:1px solid rgba(120,120,120,.18);}
+    html[dir="ltr"] #app{padding-inline-end:0; padding-inline-start:var(--rail-w);}
+    .tab-btn{flex:none; padding:14px 6px; border-radius:14px;}
+    .tab-btn.active::before,.tab-btn.active::after{display:none;}
+    .tab-btn.active{background:rgba(214,169,74,.14);}
+    .hero-banner{height:300px; border-radius:0 0 34px 34px;}
+    /* الرئيسية بعمودين: التدريب والاختبارات | المراحل */
+    .home-cols{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:8px 28px; align-items:start; padding-inline:28px;}
+    .home-cols .hero,.home-cols .exam-card,.home-cols .insight-row,.home-cols .section-head,.home-cols .quick-grid,.home-cols .pager,.home-cols .legend{margin-inline:0;}
+    .home-cols .quick-grid{grid-template-columns:repeat(3,1fr);}
+    .home-cols .path-wrap{max-width:none; margin-inline:0;}
+    .ad-banner,.topbar{margin-inline:28px;}
     .topbar{padding-inline:28px;}
-    .quick-grid{grid-template-columns:repeat(3,minmax(0,1fr)); padding-inline:28px; gap:14px;}
-    .card,.exam-card,.ad-banner{margin-inline:28px;}
-    .section-head{padding-inline:28px;}
-    .overlay,#splashScreen{max-width:760px;}
-    .toast{max-width:620px;}
+    #screenProfile,#screenPlus{max-width:760px; margin-inline:auto;}
+    .qcard p{font-size:23px;}
+    .overlay{padding-inline:max(0px, calc((100vw - 820px) / 2));}
   }
-
-  @media (min-width: 1024px){
-    body{padding:24px 28px 24px 132px;}
-    #app{
-      max-width:1180px;
-      min-height:calc(100vh - 48px);
-      padding-bottom:24px;
-      border:1px solid rgba(120,120,120,.12);
-      border-radius:28px;
-      background:color-mix(in srgb,var(--bg) 82%,transparent);
-      box-shadow:0 24px 70px rgba(0,0,0,.28);
-      overflow:hidden;
-    }
-    .screen.active{min-height:calc(100vh - 50px);}
-    .hero-banner{height:330px; margin:0 0 10px; border-radius:0 0 32px 32px;}
-    .hero-banner img{object-position:center 38%;}
-    .topbar{padding:22px 34px 12px;}
-    .brand-mark{width:46px;height:46px;}
-    .brand-name{font-size:20px;}
-    .brand-sub{font-size:12px;}
-    .stats{gap:22px;}
-    .stat{font-size:14px;}
-    .theme-btn{width:40px;height:40px;}
-
-    .tabbar{
-      top:50%; right:18px; bottom:auto; left:auto;
-      width:96px; max-width:none; transform:translateY(-50%);
-      flex-direction:column; gap:8px; padding:12px 8px;
-      border:1px solid rgba(120,120,120,.16); border-radius:22px;
-      box-shadow:0 18px 50px rgba(0,0,0,.30);
-    }
-    .tabbar .tab{min-height:64px; border-radius:15px; padding:8px 4px;}
-
-    .quick-grid{grid-template-columns:repeat(6,minmax(0,1fr)); padding:4px 34px 10px; gap:14px;}
-    .card,.exam-card,.ad-banner{margin-inline:34px;}
-    .section-head{padding-inline:34px;}
-    .exam-card{padding:20px 24px;}
-    .exam-card div h3{font-size:17px;}
-    .exam-card div p{font-size:13px;}
-    .path-wrap{padding-inline:70px; background-size:520px auto; background-position:center top;}
-    .badges-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
-    .quick-stats{grid-template-columns:repeat(4,minmax(0,1fr));}
-
-    .overlay{
-      inset:24px 28px 24px 132px; max-width:1180px;
-      border-radius:28px; border:1px solid rgba(120,120,120,.14);
-      box-shadow:0 24px 70px rgba(0,0,0,.38);
-    }
-    #splashScreen{inset:24px 28px 24px 132px; max-width:1180px; border-radius:28px;}
-    .toast{top:28px; max-width:700px;}
-    .name-modal{max-width:560px;}
-  }
-
-  @media (min-width: 1440px){
-    #app,.overlay,#splashScreen{max-width:1320px;}
-    .hero-banner{height:370px;}
-    .quick-grid{gap:18px;}
-  }
-
+  @media (min-width:700px) and (max-height:520px){ .hero-banner{height:160px;} }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -482,6 +460,8 @@
       <button class="btn-ghost" style="padding:6px 10px; font-size:11px;" id="adPlusBtn" data-i18n="remove">إزالة</button>
     </div>
 
+    <div class="home-cols">
+    <div class="home-col col-a">
     <div class="hero guide-hero">
       <h1 data-i18n="guideTitle">كيف يعمل التطبيق؟</h1>
       <p class="guide-sub" data-i18n="guideSub">تدرّب على القدرات والتحصيلي عبر مراحل قصيرة تتصاعد صعوبتها تدريجيًا.</p>
@@ -506,6 +486,8 @@
     <div class="section-head"><h2 data-i18n="quickTitle">تدريب سريع بالقسم</h2><span class="hint" id="quickHint" data-i18n="quickHint">3 أسئلة لكل قسم · تتجدد كل 3 دقائق</span></div>
     <div class="quick-grid" id="quickGrid"></div>
 
+    </div><!-- /col-a -->
+    <div class="home-col col-b">
     <div class="section-head"><h2 data-i18n="stagesTitle">المراحل</h2></div>
     <div class="pager">
       <button class="pager-btn jump" id="pageJump" style="flex:none; padding-inline:18px;" data-i18n="jumpBtn">📍 اذهب إلى مرحلتي الحالية</button>
@@ -513,6 +495,8 @@
     <div class="path-wrap" id="pathWrap"></div>
 
     <div class="legend" id="legendBox"></div>
+    </div><!-- /col-b -->
+    </div><!-- /home-cols -->
   </div>
 
   <!-- ================= PROFILE ================= -->
@@ -8248,12 +8232,13 @@ async function openPaymentModal(){
         body: JSON.stringify({ plan, occ: !!getActiveOccasion() })
       });
       const d = await res.json().catch(()=>({}));
-      if(!res.ok || !d.url) throw new Error(d.error || ('http '+res.status));
+      if(!res.ok || !d.url){ const er = new Error(d.error || ('http '+res.status)); er.detail = d.detail || d.message || ''; er.status = res.status; throw er; }
       showToast(L ? 'Opening payment page' : 'جارٍ فتح صفحة الدفع', L ? 'Plus activates automatically after payment.' : 'يُفعَّل Plus تلقائيًا بعد نجاح الدفع.');
       location.href = d.url;
     }catch(e){
       console.warn('checkout failed', e);
-      showToast(L ? 'Could not start payment' : 'تعذّر بدء الدفع', L ? 'Please try again in a moment.' : 'حاول مرة أخرى بعد قليل.');
+      const code = String((e && e.message) || e || '').slice(0,60) + (e && e.detail ? ' — '+String(e.detail).slice(0,80) : '');
+      showToast(L ? 'Could not start payment' : 'تعذّر بدء الدفع', (L ? 'Error: ' : 'رمز الخطأ: ') + code);
     }finally{ _payBusy = false; }
     return;
   }
