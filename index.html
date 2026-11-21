@@ -7885,7 +7885,18 @@ const SUPABASE_CONFIGURED = !SUPABASE_URL.includes('YOUR-PROJECT-REF') && !SUPAB
 let sb = null, currentUser = null, cloudSyncTimer = null, isAdmin = false;
 try{
   if(SUPABASE_CONFIGURED && window.supabase){
-    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // إبقاء المستخدم مسجّلًا حتى يضغط «تسجيل الخروج»: الجلسة تُحفظ وتُجدَّد تلقائيًا،
+    // ويُحفظ لها نسخة احتياطية إن مسح المتصفح/WebView التخزين الرئيسي.
+    const _mem = {};
+    const _safe = (fn)=>{ try{ return fn(); }catch(e){ return null; } };
+    const robustStorage = {
+      getItem: (k)=> _safe(()=>localStorage.getItem(k)) ?? _safe(()=>sessionStorage.getItem(k)) ?? _mem[k] ?? null,
+      setItem: (k,v)=>{ _mem[k]=v; _safe(()=>localStorage.setItem(k,v)); _safe(()=>sessionStorage.setItem(k,v)); },
+      removeItem: (k)=>{ delete _mem[k]; _safe(()=>localStorage.removeItem(k)); _safe(()=>sessionStorage.removeItem(k)); }
+    };
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:true, storage:robustStorage }
+    });
   }
 }catch(e){ console.warn('Supabase init failed', e); }
 
@@ -8186,6 +8197,10 @@ if(sb){
     if(currentUser){ cloudPull().then(afterLogin); } else if(isAdmin){ isAdmin = false; renderAuthUI(); }
   });
 }
+// عند العودة للتطبيق بعد فترة (أو بعد صفحة الدفع) نتأكد أن الجلسة سارية ونجدّدها إن لزم
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState==='visible' && sb){ try{ sb.auth.getSession(); }catch(e){} }
+});
 const _origSaveState = saveState;
 saveState = function(){ _origSaveState(); if(currentUser) cloudPush(); };
 
