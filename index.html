@@ -8029,6 +8029,15 @@ document.getElementById('googleModalBtn').onclick = async ()=>{
     L ? 'Google blocks sign-in inside embedded apps. Open the app link in Chrome, or sign in with email and password.'
       : 'جوجل تمنع تسجيل الدخول داخل التطبيقات المدمجة. افتح رابط التطبيق في Chrome، أو سجّل بالبريد وكلمة المرور.',
     '⚠️', false);
+  // داخل تطبيق الأندرويد (WebView) لا يستطيع جوجل إعادة المستخدم للتطبيق، فنرشده بدل أن ينتهي بصفحة خطأ
+  if(location.hostname === 'appassets.androidplatform.net' || /;\s*wv\)/.test(navigator.userAgent)){
+    showMessage(
+      L ? 'Use email in the app' : 'سجّل بالبريد داخل التطبيق',
+      L ? 'Google sign-in cannot return to the app. Sign in with email and password here, or open the web version in Chrome to use Google.'
+        : 'تسجيل جوجل لا يستطيع الرجوع إلى التطبيق. سجّل هنا بالبريد وكلمة المرور، أو افتح نسخة الويب في Chrome لتسجّل بجوجل.',
+      'ℹ️', false);
+    return;
+  }
   try{
     const redirectTo = window.location.href.split('#')[0].split('?')[0];
     const { data, error } = await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo, skipBrowserRedirect:true } });
